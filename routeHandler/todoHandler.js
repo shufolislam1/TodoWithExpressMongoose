@@ -7,7 +7,7 @@ const Todo = new mongoose.model("Todo", todoSchema)
 
 // Get all todo
 router.get('/', async(req, res) => {
-    await Todo.find({status: "active"}, (error,data)=> {
+    await Todo.find({status: "inactive"}, (error,data)=> {
         if(error){
             res.status(500).json({
                 error: "There was a server side error!",
@@ -18,22 +18,23 @@ router.get('/', async(req, res) => {
                 message: "Successfull!",
             });
         }
-    })
+    }).clone()
 })
 
 // get one todo specified by id
 router.get('/:id', async(req, res) => {
-    await Todo.findOne({ _id: req.params.id }, (error)=> {
+    await Todo.findOne({ _id: req.params.id }, (error,data)=> {
         if(error){
             res.status(500).json({
                 error: "There was a server side error!"
             });
         }else{
             res.status(200).json({
-                message: "Todo was deleted Successfully!"
+                result: data,
+                message: "Successfull!!!"
             });
         }
-    })
+    }).clone()
 })
 
 // post one todo
@@ -99,7 +100,7 @@ router.delete('/:id', async(req, res) => {
                 message: "Todo was deleted Successfully!"
             });
         }
-    })
+    }).clone()
 })
 
 module.exports = router;
