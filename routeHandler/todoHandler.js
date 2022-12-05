@@ -7,12 +7,33 @@ const Todo = new mongoose.model("Todo", todoSchema)
 
 // Get all todo
 router.get('/', async(req, res) => {
-
+    await Todo.find({status: "active"}, (error,data)=> {
+        if(error){
+            res.status(500).json({
+                error: "There was a server side error!",
+            });
+        }else{
+            res.status(200).json({
+                result: data,
+                message: "Successfull!",
+            });
+        }
+    })
 })
 
 // get one todo specified by id
 router.get('/:id', async(req, res) => {
-
+    await Todo.findOne({ _id: req.params.id }, (error)=> {
+        if(error){
+            res.status(500).json({
+                error: "There was a server side error!"
+            });
+        }else{
+            res.status(200).json({
+                message: "Todo was deleted Successfully!"
+            });
+        }
+    })
 })
 
 // post one todo
@@ -47,12 +68,12 @@ router.post('/all', async(req, res) => {
 })
 
 // update one todo specified by id
-router.put('/:id', async(req, res) => {
-    await Todo.updateOne({_id: req.params.id}, {
+router.put('/:id', async (req, res) => {
+    await Todo.updateOne({ _id: req.params.id }, {
         $set: {
-            title: "Get an internship.",
+            title: "Revise and practice very very well",
         }
-    }, (error)=> {
+    }, (error) => {
         if(error){
             res.status(500).json({
                 error: "There was a server side error!"
@@ -62,12 +83,23 @@ router.put('/:id', async(req, res) => {
                 message: "Todo was updated Successfully!"
             });
         }
-    })
+    }).clone()
+
 })
 
 // delete one todo specified by id
-router.delete('/:id', async(req, res) => {
-
+router.delete('/:id', async(req, res) => {  
+    await Todo.deleteOne({ _id: req.params.id }, (error)=> {
+        if(error){
+            res.status(500).json({
+                error: "There was a server side error!"
+            });
+        }else{
+            res.status(200).json({
+                message: "Todo was deleted Successfully!"
+            });
+        }
+    })
 })
 
 module.exports = router;
