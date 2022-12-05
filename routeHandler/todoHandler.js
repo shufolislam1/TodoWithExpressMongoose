@@ -21,11 +21,11 @@ router.post('/', async(req, res) => {
     await newTodo.save((error) => {
         if(error){
             res.status(500).json({
-                error: "There was a server side error!"
+                error: "There was a server side error!",
             });
         }else{
             res.status(200).json({
-                message: "Todo is inserted Successfully!"
+                message: "Todo is inserted Successfully!",
             });
         }
     })
@@ -33,12 +33,36 @@ router.post('/', async(req, res) => {
 
 // post multiple todo
 router.post('/all', async(req, res) => {
-
+    await Todo.insertMany(req.body, (error) =>{
+        if(error){
+            res.status(500).json({
+                error: "There was a server side error!"
+            });
+        }else{
+            res.status(200).json({
+                message: "Todos were inserted Successfully!"
+            });
+        }
+    })
 })
 
 // update one todo specified by id
 router.put('/:id', async(req, res) => {
-
+    await Todo.updateOne({_id: req.params.id}, {
+        $set: {
+            title: "Get an internship.",
+        }
+    }, (error)=> {
+        if(error){
+            res.status(500).json({
+                error: "There was a server side error!"
+            });
+        }else{
+            res.status(200).json({
+                message: "Todo was updated Successfully!"
+            });
+        }
+    })
 })
 
 // delete one todo specified by id

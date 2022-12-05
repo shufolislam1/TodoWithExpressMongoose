@@ -13,7 +13,7 @@ const todoSchemas = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
-    },
+    }
 })
 
 module.exports = todoSchemas;
