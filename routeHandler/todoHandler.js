@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const todoSchema = require('../schemas/todoSchemas')
 const router = express.Router();
 // creating model using mongoose Schema
-const Todo = new mongoose.model("Todo", todoSchema)
+const Todo = new mongoose.model("Todo", todoSchema);
+// import jwt part
+const checkLogin = require('../middlewares/checkLogin')
 
 // Get all todo
-router.get('/', async(req, res) => {
+router.get('/', checkLogin, async(req, res) => {
     await Todo.find({status: "inactive"}, (error,data)=> {
         if(error){
             res.status(500).json({
